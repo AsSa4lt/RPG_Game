@@ -88,6 +88,20 @@ build CMakeFiles/Game.dir/ECS/Vector2D.cpp.o: CXX_COMPILER__Game_Debug /Users/ro
   OBJECT_DIR = CMakeFiles/Game.dir
   OBJECT_FILE_DIR = CMakeFiles/Game.dir/ECS
 
+build CMakeFiles/Game.dir/ECS/ColliderComponent.cpp.o: CXX_COMPILER__Game_Debug /Users/rostyslav/Desktop/C++$ coding/Game/ECS/ColliderComponent.cpp || cmake_object_order_depends_target_Game
+  DEP_FILE = CMakeFiles/Game.dir/ECS/ColliderComponent.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fcolor-diagnostics -std=gnu++17
+  INCLUDES = -I/opt/homebrew/include -isystem /opt/homebrew/include/SDL2
+  OBJECT_DIR = CMakeFiles/Game.dir
+  OBJECT_FILE_DIR = CMakeFiles/Game.dir/ECS
+
+build CMakeFiles/Game.dir/ECS/Collision.cpp.o: CXX_COMPILER__Game_Debug /Users/rostyslav/Desktop/C++$ coding/Game/ECS/Collision.cpp || cmake_object_order_depends_target_Game
+  DEP_FILE = CMakeFiles/Game.dir/ECS/Collision.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0 -fcolor-diagnostics -std=gnu++17
+  INCLUDES = -I/opt/homebrew/include -isystem /opt/homebrew/include/SDL2
+  OBJECT_DIR = CMakeFiles/Game.dir
+  OBJECT_FILE_DIR = CMakeFiles/Game.dir/ECS
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Game
@@ -96,7 +110,7 @@ build CMakeFiles/Game.dir/ECS/Vector2D.cpp.o: CXX_COMPILER__Game_Debug /Users/ro
 #############################################
 # Link the executable Game
 
-build Game: CXX_EXECUTABLE_LINKER__Game_Debug CMakeFiles/Game.dir/main.cpp.o CMakeFiles/Game.dir/Game.cpp.o CMakeFiles/Game.dir/TextureManager.cpp.o CMakeFiles/Game.dir/GameObject.cpp.o CMakeFiles/Game.dir/Map.cpp.o CMakeFiles/Game.dir/ECS/Vector2D.cpp.o | /opt/homebrew/lib/libSDL2.dylib /opt/homebrew/Cellar/sdl2_image/2.6.3/lib/libSDL2_image.dylib
+build Game: CXX_EXECUTABLE_LINKER__Game_Debug CMakeFiles/Game.dir/main.cpp.o CMakeFiles/Game.dir/Game.cpp.o CMakeFiles/Game.dir/TextureManager.cpp.o CMakeFiles/Game.dir/GameObject.cpp.o CMakeFiles/Game.dir/Map.cpp.o CMakeFiles/Game.dir/ECS/Vector2D.cpp.o CMakeFiles/Game.dir/ECS/ColliderComponent.cpp.o CMakeFiles/Game.dir/ECS/Collision.cpp.o | /opt/homebrew/lib/libSDL2.dylib /opt/homebrew/Cellar/sdl2_image/2.6.3/lib/libSDL2_image.dylib
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  /opt/homebrew/lib/libSDL2.dylib  /opt/homebrew/Cellar/sdl2_image/2.6.3/lib/libSDL2_image.dylib
   LINK_PATH = -L/opt/homebrew/lib

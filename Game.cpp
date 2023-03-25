@@ -9,14 +9,19 @@
 #include "ECS/Components.h"
 #include "ECS/ECS.h"
 #include "ECS/SpriteComponents.h"
+#include "ECS/Collision.h"
+#include "ECS/ColliderComponent.h"
 
 
 Map* map;
+Manager manager;
+
 SDL_Event Game::event;
 SDL_Renderer* Game::renderer = nullptr;
 
-Manager manager;
 auto& player(manager.addEntity());
+auto& wall(manager.addEntity());
+
 
 Game::~Game() {
 
@@ -46,9 +51,14 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     map = new Map();
-    player.addComponent<TranformComponent>();
+    player.addComponent<TransformComponent>(2);
     player.addComponent<SpriteComponent>("../Assets/player.png");
     player.addComponent<KeyBoardContoller>();
+    player.addComponent<ColliderComponent>("player");
+
+    wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
+    wall.addComponent<SpriteComponent>("../Assets/dirt.png");
+    wall.addComponent<ColliderComponent>("wall");
 }
 
 void Game::handleEvents() {
@@ -67,14 +77,18 @@ void Game::update() {
     cnt++;
     manager.update();
     manager.refresh();
+    if(Collision::AABB(player.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider)){
+        std::cout<<"loh";
+    }
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
     //TODO: stuff to render
-    map->DrawMap();
 
     manager.draw();
+    map->DrawMap();
+
     SDL_RenderPresent(renderer);
 }
 

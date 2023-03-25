@@ -32,6 +32,7 @@ Map::Map() {
     dirt = TextureManager::LoadTexture("../Assets/dirt.png");
     grass = TextureManager::LoadTexture("../Assets/grass.png");
     water = TextureManager::LoadTexture("../Assets/water.png");
+    std::cout<<"Map texture loaded";
     LoadMap(level1);
     src.x = src.y = 0;
     src.w = src.h = 32;
@@ -41,7 +42,9 @@ Map::Map() {
 }
 
 Map::~Map() {
-
+    SDL_DestroyTexture(grass);
+    SDL_DestroyTexture(water);
+    SDL_DestroyTexture(dirt);
 }
 
 void Map::DrawMap() {

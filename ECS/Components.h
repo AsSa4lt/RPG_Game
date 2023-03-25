@@ -5,8 +5,9 @@
 #ifndef GAME_COMPONENTS_H
 #define GAME_COMPONENTS_H
 #include "ECS.h"
-#include "TranformComponent.h"
+#include "TransformComponent.h"
 #include "KeyBoardController.h"
+#include "ColliderComponent.h"
 
 
 

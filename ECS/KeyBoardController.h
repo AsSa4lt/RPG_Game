@@ -11,10 +11,10 @@
 
 class KeyBoardContoller : public Component{
 public:
-    TranformComponent* transform;
+    TransformComponent* transform;
 
     void init() override{
-        transform = &entity->getComponent<TranformComponent>();
+        transform = &entity->getComponent<TransformComponent>();
     }
 
     void update() override{
