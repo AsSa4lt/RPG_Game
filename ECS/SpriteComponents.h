@@ -10,7 +10,7 @@
 
 class SpriteComponent: public Component{
 private:
-    PositionComponent *position;
+    TranformComponent *tranform;
     SDL_Texture *texture;
     SDL_Rect srcRect, destRect;
 public:
@@ -19,14 +19,14 @@ public:
         texture = TextureManager::LoadTexture(path);
     }
     void init() override{
-        position = &entity->getComponent<PositionComponent>();
+        tranform = &entity->getComponent<TranformComponent>();
         srcRect.x = srcRect.y = 0;
         srcRect.w = srcRect.h = 32;
         destRect.w = destRect.h = 64;
     }
     void update() override{
-        destRect.x = position->x();
-        destRect.y = position->y();
+        destRect.x = (int)tranform->position.x;
+        destRect.y = (int)tranform->position.y;
     }
     void draw() override{
         TextureManager::Draw(texture, srcRect, destRect);

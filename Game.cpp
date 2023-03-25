@@ -12,7 +12,7 @@
 
 
 Map* map;
-
+SDL_Event Game::event;
 SDL_Renderer* Game::renderer = nullptr;
 
 Manager manager;
@@ -46,12 +46,12 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     map = new Map();
-    player.addComponent<PositionComponent>();
+    player.addComponent<TranformComponent>();
     player.addComponent<SpriteComponent>("../Assets/player.png");
+    player.addComponent<KeyBoardContoller>();
 }
 
 void Game::handleEvents() {
-    SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type) {
         case SDL_QUIT:
