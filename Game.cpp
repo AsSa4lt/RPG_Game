@@ -78,7 +78,8 @@ void Game::update() {
     manager.update();
     manager.refresh();
     if(Collision::AABB(player.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider)){
-        std::cout<<"loh";
+       player.getComponent<TransformComponent>().scale = 1;
+        player.getComponent<TransformComponent>().velocity * -1;
     }
 }
 

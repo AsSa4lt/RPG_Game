@@ -27,12 +27,13 @@ public:
         srcRect.x = srcRect.y = 0;
         srcRect.w = tranform->width;
         srcRect.h = tranform->heigth;
-        destRect.w = tranform->width*tranform->scale;
-        destRect.h = tranform->heigth*tranform->scale;
+
     }
     void update() override{
-        destRect.x = (int)tranform->position.x;
-        destRect.y = (int)tranform->position.y;
+        destRect.x = static_cast<int>(tranform->position.x);
+        destRect.y = static_cast<int>(tranform->position.y);
+        destRect.w = tranform->width*tranform->scale;
+        destRect.h = tranform->heigth*tranform->scale;
     }
     void draw() override{
         TextureManager::Draw(texture, srcRect, destRect);
