@@ -7,9 +7,8 @@
 #include "../Game.h"
 #include "ECS.h"
 #include "Components.h"
-#include "iostream"
 
-class KeyBoardContoller : public Component{
+class KeyBoardController : public Component{
 public:
     TransformComponent* transform;
 

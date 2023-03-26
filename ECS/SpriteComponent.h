@@ -2,9 +2,11 @@
 // Created by Rostyslav on 25.03.2023.
 //
 
-#ifndef GAME_SPRITECOMPONENTS_H
-#define GAME_SPRITECOMPONENTS_H
+#ifndef GAME_SPRITECOMPONENT_H
+#define GAME_SPRITECOMPONENT_H
+#include "ECS.h"
 #include "Components.h"
+#include "../Game.h"
 #include "SDL.h"
 #include "../TextureManager.h"
 
@@ -40,4 +42,4 @@ public:
     }
 };
 
-#endif //GAME_SPRITECOMPONENTS_H
+#endif //GAME_SPRITECOMPONENT_H

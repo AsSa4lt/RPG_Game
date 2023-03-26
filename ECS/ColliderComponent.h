@@ -7,6 +7,7 @@
 #include "SDl.h"
 #include "Components.h"
 
+
 class ColliderComponent : public Component{
 public:
     SDL_Rect collider;
@@ -22,6 +23,8 @@ public:
             entity->addComponent<TransformComponent>();
         }
         tranform = &entity->getComponent<TransformComponent>();
+
+        Game::colliders.push_back(this);
     }
 
     void update() override{
