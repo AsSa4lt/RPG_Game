@@ -20,6 +20,7 @@ SDL_Event Game::event;
 SDL_Renderer* Game::renderer = nullptr;
 
 std::vector<ColliderComponent*> Game::colliders;
+const char* mapfile = "../Assets/terrain_ss.png";
 
 auto& player(manager.addEntity());
 enum groupLabels : std::size_t{
@@ -58,10 +59,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     map = new Map();
-    Map::LoadMap("../Assets/pixel16*16.txt", 16, 16);
+    Map::LoadMap("../Assets/map.map", 25, 20);
 
-    player.addComponent<TransformComponent>(2);
-    player.addComponent<SpriteComponent>("../Assets/player_idle.png", 4, 200);
+    player.addComponent<TransformComponent>(4);
+    player.addComponent<SpriteComponent>("../Assets/player_anims.png", true);
     player.addComponent<KeyBoardController>();
     player.addComponent<ColliderComponent>("player");
     player.addGroup(groupPlayers);
@@ -121,9 +122,9 @@ bool Game::running() {
     return isRunning;
 }
 
-void Game::AddTile(int id, int x, int y) {
+void Game::AddTile(int srcX, int srcY, int xpos, int ypos){
     auto& tile(manager.addEntity());
-    tile.addComponent<TileComponent>(x, y, 32, 32, id);
+    tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
     tile.addGroup(groupMap);
 }
 
