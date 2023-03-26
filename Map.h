@@ -4,22 +4,17 @@
 
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
-
-#include "Game.h"
-
+#include "iostream"
 
 class Map {
 public:
     Map();
     ~Map();
 
-    void LoadMap(int arr[20][25]);
+    static void LoadMap(std::string path, int sizeX, int sizeY);
     void DrawMap();
 private:
-    SDL_Rect src, dest;
-    SDL_Texture* dirt;
-    SDL_Texture* grass;
-    SDL_Texture * water;
+
 
     int map[20][25];
 };

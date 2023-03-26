@@ -24,9 +24,6 @@ std::vector<ColliderComponent*> Game::colliders;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
 
-auto& tile0(manager.addEntity());
-auto& tile1(manager.addEntity());
-auto & tile2(manager.addEntity());
 
 Game::~Game() {
 
@@ -56,22 +53,12 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     map = new Map();
-
-    tile0.addComponent<TileComponent>(200,200,32,32,0);
-    tile1.addComponent<TileComponent>(250,250,32,32,1);
-    tile1.addComponent<ColliderComponent>("dirt");
-    tile2.addComponent<TileComponent>(150,150,32,32,1);
-    tile2.addComponent<ColliderComponent>("grass");
-
+    Map::LoadMap("../Assets/pixel16*16.txt", 16, 16);
 
     player.addComponent<TransformComponent>(2);
     player.addComponent<SpriteComponent>("../Assets/player.png");
     player.addComponent<KeyBoardController>();
     player.addComponent<ColliderComponent>("player");
-
-    wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-    wall.addComponent<SpriteComponent>("../Assets/dirt.png");
-    wall.addComponent<ColliderComponent>("wall");
 }
 
 void Game::handleEvents() {
@@ -90,9 +77,8 @@ void Game::update() {
     cnt++;
     manager.update();
     manager.refresh();
-    if(Collision::AABB(player.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider)){
-       player.getComponent<TransformComponent>().scale = 1;
-        player.getComponent<TransformComponent>().velocity * -1;
+    for(auto cc : colliders){
+        Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
     }
 }
 
@@ -114,6 +100,11 @@ void Game::clean() {
 
 bool Game::running() {
     return isRunning;
+}
+
+void Game::AddTile(int id, int x, int y) {
+    auto& tile(manager.addEntity());
+    tile.addComponent<TileComponent>(x, y, 32, 32, id);
 }
 
 
