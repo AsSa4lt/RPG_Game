@@ -6,32 +6,43 @@
 #define GAME_GAME_H
 #include "SDL.h"
 #include "SDL_image.h"
-#include "vector"
+#include <iostream>
+#include <vector>
 
+class AssetManager;
 class ColliderComponent;
 
-class Game {
+class Game
+{
 public:
     Game();
     ~Game();
 
-    void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+    void init(const char* title, int width, int height, bool fullscreen);
+
+    void handleEvents();
     void update();
+    bool running() { return isRunning; }
     void render();
     void clean();
-    void handleEvents();
 
-    bool running();
-
-    static void AddTile(int id, int x, int y);
     static SDL_Renderer *renderer;
     static SDL_Event event;
-    static std::vector<ColliderComponent*> colliders;
-private:
-    int cnt = 0;
-    bool isRunning;
-    SDL_Window * window;
-};
+    static bool isRunning;
+    static SDL_Rect camera;
+    static AssetManager* assets;
+    enum groupLabels : std::size_t
+    {
+        groupMap,
+        groupPlayers,
+        groupColliders,
+        groupProjectiles
+    };
 
+private:
+
+    int cnt = 0;
+    SDL_Window *window;
+};
 
 #endif //GAME_GAME_H

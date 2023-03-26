@@ -9,7 +9,7 @@ int main() {
     uint32_t frameStart;
     int frameTime;
 
-    game->init("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
+    game->init("Game", 800, 640, false);
     while (game->running()){
         frameStart = SDL_GetTicks();
 

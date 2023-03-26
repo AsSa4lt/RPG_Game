@@ -219,6 +219,9 @@ Game_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Game_SOURCE_DIR:STATIC=/Users/rostyslav/Desktop/C++ coding/Game
 
+//The directory containing a CMake configuration file for SD2L_ttf.
+SD2L_ttf_DIR:PATH=SD2L_ttf_DIR-NOTFOUND
+
 //The directory containing a CMake configuration file for SDL2IMAGE.
 SDL2IMAGE_DIR:PATH=SDL2IMAGE_DIR-NOTFOUND
 
@@ -230,6 +233,9 @@ SDL2_IMAGE_DIR:PATH=/opt/homebrew/lib/cmake/SDL2_image
 
 //The directory containing a CMake configuration file for SDL2_image.
 SDL2_image_DIR:PATH=/opt/homebrew/lib/cmake/SDL2_image
+
+//The directory containing a CMake configuration file for SDL2_ttf.
+SDL2_ttf_DIR:PATH=/opt/homebrew/lib/cmake/SDL2_ttf
 
 //The directory containing a CMake configuration file for SDL2image.
 SDL2image_DIR:PATH=SDL2image_DIR-NOTFOUND
@@ -248,6 +254,12 @@ SDL_INCLUDE_DIR:PATH=/opt/homebrew/include/SDL
 
 //Where the SDL Library can be found
 SDL_LIBRARY:STRING=/opt/homebrew/lib/libSDLmain.a;/opt/homebrew/lib/libSDL.dylib;-framework Cocoa
+
+//Path to a file.
+SDL_TTF_INCLUDE_DIR:PATH=/opt/homebrew/include/SDL
+
+//Path to a library.
+SDL_TTF_LIBRARY:FILEPATH=/opt/homebrew/lib/libSDL_ttf.dylib
 
 
 ########################
@@ -389,10 +401,16 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_SDL:INTERNAL=[/opt/homebrew/lib/libSDLmain.a;/opt/homebrew/lib/libSDL.dylib;-framework Cocoa][/opt/homebrew/include/SDL][v1.2.60()]
 //Details about finding SDL_image
 FIND_PACKAGE_MESSAGE_DETAILS_SDL_image:INTERNAL=[/opt/homebrew/lib/libSDL_image.dylib][/opt/homebrew/include/SDL][v1.2.12()]
+//Details about finding SDL_ttf
+FIND_PACKAGE_MESSAGE_DETAILS_SDL_ttf:INTERNAL=[/opt/homebrew/lib/libSDL_ttf.dylib][/opt/homebrew/include/SDL][v2.0.11()]
 //ADVANCED property for variable: SDL_IMAGE_INCLUDE_DIR
 SDL_IMAGE_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SDL_IMAGE_LIBRARY
 SDL_IMAGE_LIBRARY-ADVANCED:INTERNAL=1
 //Path to a library.
 SDL_LIBRARY_TEMP:INTERNAL=/opt/homebrew/lib/libSDL.dylib
+//ADVANCED property for variable: SDL_TTF_INCLUDE_DIR
+SDL_TTF_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL_TTF_LIBRARY
+SDL_TTF_LIBRARY-ADVANCED:INTERNAL=1
 

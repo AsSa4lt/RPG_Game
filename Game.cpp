@@ -3,75 +3,102 @@
 //
 
 #include "Game.h"
-#include "iostream"
 #include "TextureManager.h"
 #include "Map.h"
 #include "ECS/Components.h"
-#include "ECS/ECS.h"
-#include "ECS/SpriteComponent.h"
+#include "ECS/Vector2D.h"
 #include "ECS/Collision.h"
-#include "ECS/ColliderComponent.h"
-
+#include "AssetManager.h"
+#include <sstream>
 
 Map* map;
 Manager manager;
 
-SDL_Event Game::event;
 SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
 
-std::vector<ColliderComponent*> Game::colliders;
+SDL_Rect Game::camera = { 0,0,800,640 };
+
+AssetManager* Game::assets = new AssetManager(&manager);
+
+bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
-enum groupLabels : std::size_t{
-    groupMap,
-    groupPlayers,
-    groupEnemies,
-    groupColliders
-};
+auto& label(manager.addEntity());
 
+Game::Game()
+{}
 
-Game::~Game() {
+Game::~Game()
+{}
 
-}
+void Game::init(const char* title, int width, int height, bool fullscreen)
+{
+    int flags = 0;
 
-Game::Game() {
-
-}
-
-void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen) {
-    int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
-    if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
-        std:: cout << "Subsystem initialized!..." << std::endl;
-        window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-        if(window){
-            std::cout<<"Window created";
-        }
-        renderer = SDL_CreateRenderer(window, -1, 0);
-        if(renderer){
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            std::cout<<"Rendered successfully" << std::endl;
-        }
-        isRunning = true;
-    }else{
-        isRunning = false;
-        std::cout << "Initialized incorrect"<<std::endl;
+    if (fullscreen)
+    {
+        flags = SDL_WINDOW_FULLSCREEN;
     }
 
-    map = new Map();
-    Map::LoadMap("../Assets/pixel16*16.txt", 16, 16);
+    if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+    {
+        window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+        renderer = SDL_CreateRenderer(window, -1, 0);
+        if (renderer)
+        {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        }
 
-    player.addComponent<TransformComponent>(2);
-    player.addComponent<SpriteComponent>("../Assets/player_idle.png", 4, 200);
-    player.addComponent<KeyBoardController>();
+        isRunning = true;
+    }
+
+    if (TTF_Init() == -1)
+    {
+        std::cout << "Error : SDL_TTF" << std::endl;
+    }
+
+    assets->AddTexture("terrain", "../Assets/terrain_ss.png");
+    assets->AddTexture("player", "../Assets/player_anims.png");
+    assets->AddTexture("projectile", "../Assets/proj.png");
+
+    assets->AddFont("arial", "../Assets/arial.ttf", 16);
+
+    map = new Map("terrain", 3, 32);
+    //ecs implementation
+
+    map->LoadMap("../Assets/map.map", 25, 20);
+
+    player.addComponent<TransformComponent>(800.0f, 640.0f, 32 , 32, 4);
+    player.addComponent<SpriteComponent>("player", true);
+    player.addComponent<KeyboardController>();
     player.addComponent<ColliderComponent>("player");
     player.addGroup(groupPlayers);
 
+    SDL_Color white = { 255, 255, 255, 255 };
+
+    label.addComponent<UILabel>(10, 10, "Test String", "arial", white);
+
+    assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, "projectile");
+    assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, "projectile");
+    assets->CreateProjectile(Vector2D(400, 600), Vector2D(2, 1), 200, 2, "projectile");
+    assets->CreateProjectile(Vector2D(600, 600), Vector2D(2, -1), 200, 2, "projectile");
+
 }
 
-void Game::handleEvents() {
+auto& tiles(manager.getGroup(Game::groupMap));
+auto& players(manager.getGroup(Game::groupPlayers));
+auto& colliders(manager.getGroup(Game::groupColliders));
+auto& projectiles(manager.getGroup(Game::groupProjectiles));
+
+void Game::handleEvents()
+{
+
     SDL_PollEvent(&event);
-    switch (event.type) {
-        case SDL_QUIT:
+
+    switch (event.type)
+    {
+        case SDL_QUIT :
             isRunning = false;
             break;
         default:
@@ -79,52 +106,87 @@ void Game::handleEvents() {
     }
 }
 
-void Game::update() {
-    //TODO:game)
-    cnt++;
-    manager.update();
+
+
+void Game::update()
+{
+
+    SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
+    Vector2D playerPos = player.getComponent<TransformComponent>().position;
+
+    std::stringstream ss;
+    ss << "Player position: " << playerPos;
+    label.getComponent<UILabel>().SetLabelText(ss.str(), "arial");
+
     manager.refresh();
-    for(auto cc : colliders){
-        Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
+    manager.update();
+
+
+    for (auto& c : colliders)
+    {
+        SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+        if (Collision::AABB(cCol, playerCol))
+        {
+            player.getComponent<TransformComponent>().position = playerPos;
+        }
     }
+
+    for (auto& p : projectiles)
+    {
+        if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
+        {
+            std::cout << "Hit player!" << std::endl;
+            p->destroy();
+        }
+    }
+
+    camera.x = static_cast<int>(player.getComponent<TransformComponent>().position.x - 400);
+    camera.y = static_cast<int>(player.getComponent<TransformComponent>().position.y - 320);
+
+    if (camera.x < 0)
+        camera.x = 0;
+    if (camera.y < 0)
+        camera.y = 0;
+    if (camera.x > camera.w)
+        camera.x = camera.w;
+    if (camera.y > camera.h)
+        camera.y = camera.h;
 }
 
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayers));
-auto& enemies(manager.getGroup(groupEnemies));
-
-
-void Game::render() {
+void Game::render()
+{
     SDL_RenderClear(renderer);
-    for(auto& t : tiles){
+    for (auto& t : tiles)
+    {
         t->draw();
     }
-    for(auto& p : players){
+
+    for (auto& c : colliders)
+    {
+        c->draw();
+    }
+
+    for (auto& p : players)
+    {
         p->draw();
     }
 
-    for(auto& e : enemies){
-        e->draw();
+    for (auto& p : projectiles)
+    {
+        p->draw();
     }
+
+    label.draw();
 
     SDL_RenderPresent(renderer);
 }
 
-void Game::clean() {
+void Game::clean()
+{
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-    std::cout<< "Game cleaned";
 }
 
-bool Game::running() {
-    return isRunning;
-}
-
-void Game::AddTile(int id, int x, int y) {
-    auto& tile(manager.addEntity());
-    tile.addComponent<TileComponent>(x, y, 32, 32, id);
-    tile.addGroup(groupMap);
-}
 
 

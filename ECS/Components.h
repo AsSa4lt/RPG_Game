@@ -6,10 +6,12 @@
 #define GAME_COMPONENTS_H
 #include "ECS.h"
 #include "TransformComponent.h"
-#include "KeyBoardController.h"
+#include "SpriteComponent.h"
+#include "KeyboardController.h"
 #include "ColliderComponent.h"
 #include "TileComponent.h"
-#include "SpriteComponent.h"
+#include "ProjectileComponent.h"
+#include "UILabel.h"
 
 
 
