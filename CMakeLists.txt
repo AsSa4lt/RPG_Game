@@ -13,6 +13,6 @@ find_package(SDL2_image CONFIG REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIR})
 
 
-add_executable(Game main.cpp Game.cpp Game.h TextureManager.cpp TextureManager.h GameObject.cpp GameObject.h Map.cpp Map.h ECS/ECS.h ECS/Components.h ECS/TransformComponent.h ECS/SpriteComponent.h ECS/Vector2D.h ECS/Vector2D.cpp ECS/KeyBoardController.h ECS/ColliderComponent.cpp ECS/ColliderComponent.h ECS/Collision.h ECS/Collision.cpp ECS/TileComponent.cpp ECS/TileComponent.h)
+add_executable(Game main.cpp Game.cpp Game.h TextureManager.cpp TextureManager.h GameObject.cpp GameObject.h Map.cpp Map.h ECS/ECS.h ECS/Components.h ECS/TransformComponent.h ECS/SpriteComponent.h ECS/Vector2D.h ECS/Vector2D.cpp ECS/KeyBoardController.h ECS/ColliderComponent.cpp ECS/ColliderComponent.h ECS/Collision.h ECS/Collision.cpp ECS/TileComponent.cpp ECS/TileComponent.h ECS/ECS.cpp)
 target_link_libraries(Game  ${SDL2_LIBRARIES}    SDL2_image::SDL2_image)
 

@@ -22,7 +22,12 @@ SDL_Renderer* Game::renderer = nullptr;
 std::vector<ColliderComponent*> Game::colliders;
 
 auto& player(manager.addEntity());
-auto& wall(manager.addEntity());
+enum groupLabels : std::size_t{
+    groupMap,
+    groupPlayers,
+    groupEnemies,
+    groupColliders
+};
 
 
 Game::~Game() {
@@ -56,9 +61,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     Map::LoadMap("../Assets/pixel16*16.txt", 16, 16);
 
     player.addComponent<TransformComponent>(2);
-    player.addComponent<SpriteComponent>("../Assets/player.png");
+    player.addComponent<SpriteComponent>("../Assets/player_idle.png", 4, 200);
     player.addComponent<KeyBoardController>();
     player.addComponent<ColliderComponent>("player");
+    player.addGroup(groupPlayers);
+
 }
 
 void Game::handleEvents() {
@@ -82,11 +89,23 @@ void Game::update() {
     }
 }
 
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayers));
+auto& enemies(manager.getGroup(groupEnemies));
+
+
 void Game::render() {
     SDL_RenderClear(renderer);
-    //TODO: stuff to render
+    for(auto& t : tiles){
+        t->draw();
+    }
+    for(auto& p : players){
+        p->draw();
+    }
 
-    manager.draw();
+    for(auto& e : enemies){
+        e->draw();
+    }
 
     SDL_RenderPresent(renderer);
 }
@@ -105,6 +124,7 @@ bool Game::running() {
 void Game::AddTile(int id, int x, int y) {
     auto& tile(manager.addEntity());
     tile.addComponent<TileComponent>(x, y, 32, 32, id);
+    tile.addGroup(groupMap);
 }
 
 
